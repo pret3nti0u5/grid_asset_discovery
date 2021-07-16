@@ -1,7 +1,7 @@
 {
-  "name": "simple-ctfd-clone",
+  "name": "grid-asset-discovery",
   "version": "1.0.0",
-  "description": "A Simple Full Stack Clone of ctfd.io",
+  "description": "Asset discovery tool for the Grid hackathon",
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
