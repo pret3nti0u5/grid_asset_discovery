@@ -5,15 +5,15 @@ function actionFunction(data) {
   console.log(data);
   console.log('Percentage complete' + scan.percentComplete());
 }
-var scan = new nmap.QueuedNmapScan(
-  'google.com 192.168.29.1', // Second is just my gateway
+var scan = new nmap.OsAndPortScan(
+  '192.168.149.159', // Second is just my gateway
   '-sC',
   actionFunction
 );
 
 scan.on('complete', function (data) {
   console.log(data);
-  data[1].openPorts.forEach((openPort) => {
+  data[0].openPorts.forEach((openPort) => {
     // Enumerates over all open ports since they are objects
     console.log(openPort);
   });
