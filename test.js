@@ -13,10 +13,11 @@ var scan = new nmap.QueuedNmapScan(
 
 scan.on('complete', function (data) {
   console.log(data);
-  data[1].openPorts.forEach((openPort) => {
-    // Enumerates over all open ports since they are objects
-    console.log(openPort);
-  });
+  console.log(
+    data[1].openPorts.forEach((openPortObj) => {
+      console.log(openPortObj);
+    })
+  );
   console.log('total scan time' + scan.scanTime);
 });
 

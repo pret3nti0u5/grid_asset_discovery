@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Post = require('./post');
+const Asset = require('./assets');
 
 const userSchema = new mongoose.Schema(
   {
@@ -109,7 +109,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.pre('remove', async function (next) {
   const user = this;
-  await Post.deleteMany({ owner: user._id });
+  await Asset.deleteMany({ owner: user._id });
   next();
 });
 
