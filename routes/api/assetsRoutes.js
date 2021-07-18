@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express();
+const router = express.Router();
 const Asset = require('../../models/asset');
 const authCheck = require('../../middleware/authCheck');
 const nmap = require('node-nmap');
@@ -35,5 +35,4 @@ router.get('/:ip', async (req, res) => {
   }
 });
 
-//module.exports = router;
-router.listen(5000, () => console.log("listening on 5000"))
+module.exports = router;
