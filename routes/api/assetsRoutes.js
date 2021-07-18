@@ -1,4 +1,5 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 const Asset = require('../../models/asset');
 const authCheck = require('../../middleware/authCheck');
 const nmap = require('node-nmap');
