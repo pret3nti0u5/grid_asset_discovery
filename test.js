@@ -1,9 +1,9 @@
 const nmap = require('libnmap');
 const opts = {
-  range: ['scanme.nmap.org', '192.168.29.1'],
+  range: ['192.168.122.232'],
   json: true,
   verbose: true,
-  flags: ['-sC', '-sV'],
+  flags: ['-sC', '-Pn'],
 };
 
 nmap.scan(opts, function (err, report) {
