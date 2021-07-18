@@ -1,28 +1,15 @@
-const nmap = require('node-nmap');
+const nmap = require('libnmap');
+const opts = {
+  range: ['scanme.nmap.org', '192.168.29.1'],
+  json: true,
+  verbose: true,
+  flags: ['-sC', '-sV'],
+};
 
-//the actionFunction gets run each time a scan on a host is complete
-function actionFunction(data) {
-  console.log(data);
-  console.log('Percentage complete' + scan.percentComplete());
-}
-var scan = new nmap.QueuedNmapScan(
-  'google.com 192.168.29.1', // Second is just my gateway
-  '-sC',
-  actionFunction
-);
+nmap.scan(opts, function (err, report) {
+  if (err) throw new Error(err);
 
-scan.on('complete', function (data) {
-  console.log(data);
-  console.log(
-    data[1].openPorts.forEach((openPortObj) => {
-      console.log(openPortObj);
-    })
-  );
-  console.log('total scan time' + scan.scanTime);
+  for (let item in report) {
+    console.log(report[item]);
+  }
 });
-
-scan.on('error', function (error) {
-  console.log(error);
-});
-
-scan.startRunScan(); //processes entire queue
