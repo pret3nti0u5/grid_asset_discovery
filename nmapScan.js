@@ -6,7 +6,7 @@ const { stringify } = require('querystring');
 
 
 
-exec("echo '' ;nmap -sC -sV 192.168.149.174", (error, stdout1, stderr) => {
+exec("echo '' ;nmap -sC -sV 192.168.149.154", (error, stdout1, stderr) => {
     if (error) throw error
     if (stderr) throw stderr
     console.log(stdout1);
