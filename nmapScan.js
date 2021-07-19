@@ -6,7 +6,7 @@ const { stringify } = require('querystring');
 
 
 
-exec("echo '' ;sudo nmap -sn 192.168.1.176 ;nmap -nod-host-timeout=120s -T 4 -Pn -sC -sV -p 1-1024 192.168.1.178", (error, stdout1, stderr) => {
+exec("echo '' ;sudo nmap -sn 192.168.1.33 ;nmap -nod-host-timeout=120s -T 4 -Pn -sC -sV -p 1-1024 192.168.1.33", (error, stdout1, stderr) => {
     if (error) throw error
     if (stderr) throw stderr
     console.log(stdout1);
@@ -18,10 +18,13 @@ exec("echo '' ;sudo nmap -sn 192.168.1.176 ;nmap -nod-host-timeout=120s -T 4 -Pn
     console.log(`${domain_adrees}`);
     let service_info = stdout1.match(/Service Info: [a-zA-Z]+: .+/i)
     console.log(service_info);
-    let os = stdout1.match(/OS: .+\s/i)
+    let os = stdout1.match(/OS: [a-zA-Z]+;/i)
     os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0]
     console.log("os")
     let workgroup = stdout1.match(/Workgroup: [a-zA-Z]+/i)
     console.log(workgroup)
+    const hostname = stdout1.match(/Host: .+;/i)
+    hostname = hostname[0].split(';')[0]
+    console.log(hostname);
 
 })
