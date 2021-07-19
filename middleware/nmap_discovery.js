@@ -26,21 +26,21 @@ const net_discovery = async (ip_address) => {
         // service_info = stdout1.match(/Service Info: [a-zA-Z]+: .+/i)
         // console.log(service_info);
         os = stdout1.match(/OS: [a-zA-Z]+;/i)
+        if (os){
         os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0]
+        }
         console.log(os)
         workgroup = stdout1.match(/Workgroup: [a-zA-Z]+/i)
-        if (workgroup) { console.log(workgroup) }
+        if (workgroup) { workgroup=workgroup[0].split(':')[1]; console.log(workgroup) }
         hostname = stdout1.match(/Nmap scan report for .+/i)
-        hostname = hostname[0].split(' ')[4]
+        if(hostname) {hostname = hostname[0].split(' ')[4]}
         console.log(hostname);
         const JSON_object = { "Host Name": hostname, "IPv4": ip, "MAC Address": mac, "Domain": domain_address, "Operating System": os, "Workgroup": workgroup }
         console.log(JSON_object);
         return JSON_object;
 
     })
-    // let result = result_1;
 
-    return result;
 
 }
 
