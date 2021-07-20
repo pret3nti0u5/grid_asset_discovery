@@ -19,23 +19,23 @@ const net_discovery = async (ip_address) => {
         // ip = ip[0]
         console.log(`The IPv4 address is: ${ip[0]}`)
         mac = stdout1.match(/(([\da-fA-F]{2}[-:]){5}[\da-fA-F]{2})/i);
-        if (mac) { console.log(`the MAC address is ${mac[0]}`) }
-        mac = mac[0];
-        domain_address = stdout1.match(/Domain: [a-zA-Z]+\.[a-zA-Z0-9]+\./i)
-        if (domain_address) { console.log(`${domain_address}`); }
+        if (mac) { console.log(`the MAC address is ${mac[0]}`); mac = mac[0]; }
+
+        // domain_address = stdout1.match(/Domain: [a-zA-Z]+\.[a-zA-Z0-9]+\./i)
+        // if (domain_address) { console.log(`${domain_address[0]}`); }
         // service_info = stdout1.match(/Service Info: [a-zA-Z]+: .+/i)
         // console.log(service_info);
         os = stdout1.match(/OS: [a-zA-Z]+;/i)
-        if (os){
-        os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0]
+        if (os) {
+            os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0]
         }
         console.log(os)
         workgroup = stdout1.match(/Workgroup: [a-zA-Z]+/i)
-        if (workgroup) { workgroup=workgroup[0].split(':')[1]; console.log(workgroup) }
+        if (workgroup) { workgroup = workgroup[0].split(':')[1]; console.log(workgroup) }
         hostname = stdout1.match(/Nmap scan report for .+/i)
-        if(hostname) {hostname = hostname[0].split(' ')[4]}
+        if (hostname) { hostname = hostname[0].split(' ')[4] }
         console.log(hostname);
-        const JSON_object = { "Host Name": hostname, "IPv4": ip, "MAC Address": mac, "Domain": domain_address, "Operating System": os, "Workgroup": workgroup }
+        const JSON_object = { "Host Name": hostname, "IPv4": ip, "MAC Address": mac, "Operating System": os, "Workgroup": workgroup }
         console.log(JSON_object);
         return JSON_object;
 
