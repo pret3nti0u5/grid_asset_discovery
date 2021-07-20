@@ -3,28 +3,33 @@
 const { exec } = require('child_process');
 const { stdout, stderr } = require('process');
 const { stringify } = require('querystring');
+const net_scan = require('./middleware/nmap_discovery');
+
+
+// exec("echo '' ;sudo nmap -sn 192.168.1.33 ;nmap -nod-host-timeout=120s -T 4 -Pn -sC -sV -p 1-1024 192.168.1.33", (error, stdout1, stderr) => {
+//     if (error) throw error
+//     if (stderr) throw stderr
+//     //console.log(stdout1);
+//     let ip = stdout1.match(/\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b/i)
+//     console.log(`The IPv4 address is: ${ip[0]}`)
+//     let mac = stdout1.match(/(([\da-fA-F]{2}[-:]){5}[\da-fA-F]{2})/i);
+//     if (mac) { console.log(`the MAC address is ${mac[0]}`) }
+//     let domain_address = stdout1.match(/Domain: [a-zA-Z]+\.[a-zA-Z0-9]+\./i)
+//     if (domain_address) { console.log(`${domain_addRess}`); }
+//     // let service_info = stdout1.match(/Service Info: [a-zA-Z]+: .+/i)
+//     // console.log(service_info);
+//     let os = stdout1.match(/OS: [a-zA-Z]+;/i)
+//     os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0]
+//     console.log(os)
+//     let workgroup = stdout1.match(/Workgroup: [a-zA-Z]+/i)
+//     if (workgroup) { console.log(workgroup) }
+//     let hostname = stdout1.match(/Nmap scan report for .+/i)
+//     hostname = hostname[0].split(' ')[4]
+//     console.log(hostname);
+
+// })
+
+let result = net_scan("192.168.1.1").then((res) => console.log(res))
 
 
 
-exec("echo '' ;sudo nmap -sn 192.168.1.33 ;nmap -nod-host-timeout=120s -T 4 -Pn -sC -sV -p 1-1024 192.168.1.33", (error, stdout1, stderr) => {
-    if (error) throw error
-    if (stderr) throw stderr
-    //console.log(stdout1);
-    let ip = stdout1.match(/\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b/i)
-    console.log(`The IPv4 address is: ${ip[0]}`)
-    let mac = stdout1.match(/(([\da-fA-F]{2}[-:]){5}[\da-fA-F]{2})/i);
-    if (mac) { console.log(`the MAC address is ${mac[0]}`) }
-    let domain_address = stdout1.match(/Domain: [a-zA-Z]+\.[a-zA-Z0-9]+\./i)
-    if (domain_address) { console.log(`${domain_addRess}`); }
-    // let service_info = stdout1.match(/Service Info: [a-zA-Z]+: .+/i)
-    // console.log(service_info);
-    let os = stdout1.match(/OS: [a-zA-Z]+;/i)
-    os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0]
-    console.log(os)
-    let workgroup = stdout1.match(/Workgroup: [a-zA-Z]+/i)
-    if (workgroup) { console.log(workgroup) }
-    let hostname = stdout1.match(/Nmap scan report for .+/i)
-    hostname = hostname[0].split(' ')[4]
-    console.log(hostname);
-
-})

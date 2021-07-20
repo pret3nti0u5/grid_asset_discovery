@@ -39,27 +39,34 @@ const filter = '(objectClass=computer)';
 const attributes = ['name']
 
 
-const ldapSeacrh = () => {
-    let domain = '';
-    ldap.search(filter, attributes).then((mess) => {
-        mess.forEach(element => {
+export default function ldapSeacrh(net_bios_name) {
+    return new Promise((resolve, reject) => {
+        let domain = '';
+        ldap.search(filter, attributes).then((mess) => {
+            mess.forEach(element => {
 
-            // console.log(element)
-            if (element["name"] === "TONY-STARK1") {
-                let j = element["dn"].replace('DN=""').replace('CN="').split(','); j.splice(0, 2); j.forEach(ele => {
-                    domain += ele.split('=')[1] + '.'
-                });
-                console.log(domain)
-            }
-        });; ldap.destroy()
+                // console.log(element)
+                if (element["name"] === net_bios_name) {
+                    //  console.log(net_bios_name)
+                    let j = element["dn"].replace('DN=""').replace('CN="').split(','); j.splice(0, 2); j.forEach(ele => {
+                        domain += ele.split('=')[1] + '.'
+                        // console.log(domain)
+                    });
+                    ldap.destroy();
+                    resolve(domain)
+
+                }
+            }); ldap.destroy();
+        })
+
     })
-    return domain;
+
 }
 
-console.log(ldapSeacrh())
+//console.log(ldapSeacrh())
 
 //module.exports = ldapSeacrh;
 
-export { ldapSeacrh };
+// export { ldapSeacrh };
 
 
