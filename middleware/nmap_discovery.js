@@ -64,5 +64,5 @@ const net_discovery = async (ip_address) => {
 //   console.log(nice);
 // };
 
-testFunc();
+// testFunc();
 module.exports = net_discovery;
