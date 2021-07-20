@@ -1,6 +1,6 @@
-# Nmap 7.91 scan initiated Tue Jul 20 14:05:07 2021 as: nmap -nod-host-timeout=120s -T 4 -Pn -sC -sV -p 1-1024 192.168.29.1
+# Nmap 7.91 scan initiated Tue Jul 20 14:24:12 2021 as: nmap -nod-host-timeout=120s -T 4 -Pn -sC -sV -p 1-1024 192.168.29.1
 Nmap scan report for 192.168.29.1
-Host is up (0.0070s latency).
+Host is up (0.011s latency).
 Not shown: 1022 filtered ports
 PORT    STATE SERVICE  VERSION
 80/tcp  open  http     lighttpd
@@ -15,4 +15,4 @@ PORT    STATE SERVICE  VERSION
 |_ssl-date: TLS randomness does not represent time
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-# Nmap done at Tue Jul 20 14:05:44 2021 -- 1 IP address (1 host up) scanned in 37.65 seconds
+# Nmap done at Tue Jul 20 14:24:51 2021 -- 1 IP address (1 host up) scanned in 38.72 seconds
