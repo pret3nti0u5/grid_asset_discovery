@@ -94,12 +94,12 @@ const net_discovery = async (ip_address) => {
         );
     });
 };
-const testFunc = async () => {
-    const nice = await net_discovery('192.168.1.1');
-    console.log(nice);
-    //     const nice1 = await net_discovery('192.168.1.224');
-    //     console.log(nice1);
-};
+// const testFunc = async () => {
+//     const nice = await net_discovery('192.168.1.1');
+//     console.log(nice);
+//     //     const nice1 = await net_discovery('192.168.1.224');
+//     //     console.log(nice1);
+// };
 
-testFunc();
+// testFunc();
 module.exports = net_discovery;
