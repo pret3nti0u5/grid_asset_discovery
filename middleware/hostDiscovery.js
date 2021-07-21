@@ -14,9 +14,13 @@ const host_discovery = async (ip_subnet) => {
         //  ip_list = stdout1.matchAll(/.+ \(\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b\)/g)
         ip_list = stdout1.match(/\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b/g)
         console.log(ip_list);
-
+        const testFunc = async (ip_add) => {
+            const nice = await nmap_discovery(ip_add);
+            console.log(nice);
+            //     //     const nice1 = await net_discovery('192.168.1.224');   //     //     console.log(nice1);
+        }
         for (i in ip_list) {
-            nmap_discovery(ip_list[i]);
+            testFunc(ip_list[i])
         }
     })
 }
