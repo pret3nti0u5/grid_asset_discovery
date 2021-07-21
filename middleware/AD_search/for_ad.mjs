@@ -31,7 +31,7 @@ var password = 'Something123!';
 //     }
 // });
 
-const ldap = new SimpleLDAP(config);
+
 
 
 // setup a filter and attributes for your LDAP query
@@ -41,10 +41,10 @@ const attributes = ['name']
 
 export default function ldapSeacrh(net_bios_name) {
     return new Promise((resolve, reject) => {
+        const ldap = new SimpleLDAP(config);
         let domain = '';
         ldap.search(filter, attributes).then((mess) => {
             mess.forEach(element => {
-
                 // console.log(element)
                 if (element["name"] === net_bios_name) {
                     //  console.log(net_bios_name)
@@ -52,11 +52,13 @@ export default function ldapSeacrh(net_bios_name) {
                         domain += ele.split('=')[1] + '.'
                         // console.log(domain)
                     });
-                    ldap.destroy();
+
                     resolve(domain)
 
                 }
-            }); ldap.destroy();
+            });
+            resolve(domain)
+            ldap.destroy();
         })
 
     })
