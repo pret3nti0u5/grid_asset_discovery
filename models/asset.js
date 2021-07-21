@@ -14,15 +14,11 @@ const assetSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
-    openPorts: [
-      {
-        port: String,
-        protocol: String,
-        service: 'String',
-        method: String,
-      },
-    ],
-    osNmap: {
+    os: {
+      type: String,
+      trim: true,
+    },
+    workgroup: {
       type: String,
       trim: true,
     },

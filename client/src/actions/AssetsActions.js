@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { returnErrors } from './errorActions';
-import { GET_POSTS, POSTS_LOADING, CLEAR_MSGS } from './types';
+import { GET_ASSETS, ASSETS_LOADING, CLEAR_MSGS } from './types';
 
-export const getPosts = () => async (dispatch) => {
-  dispatch(setPostsLoading());
+export const getAssets = () => async (dispatch) => {
+  dispatch(setAssetsLoading());
   try {
-    const res = await axios.get('/api/posts', { withCredentials: true });
+    const res = await axios.get('/api/assets', { withCredentials: true });
     dispatch({
-      type: GET_POSTS,
+      type: GET_ASSETS,
       payload: res.data,
     });
   } catch (e) {
@@ -15,9 +15,9 @@ export const getPosts = () => async (dispatch) => {
   }
 };
 
-export const setPostsLoading = () => {
+export const setAssetsLoading = () => {
   return {
-    type: POSTS_LOADING,
+    type: ASSETS_LOADING,
   };
 };
 

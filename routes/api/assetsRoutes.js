@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Asset = require('../../models/asset');
 const authCheck = require('../../middleware/authCheck');
-const nmap = require('node-nmap');
+const net_discovery = require('../../middleware/nmap_discovery');
 
 router.get('/', async (req, res) => {
   try {
@@ -20,15 +20,10 @@ router.get('/:ip', async (req, res) => {
     if (asset.length !== 0) {
       res.send(asset);
     } else {
-      let nmapScan = new nmap.NmapScan(`${ip}`, '-sC -sV');
-      nmapScan.on('complete', async (data) => {
-        const newAsset = new Asset(data[0]);
-        await newAsset.save();
-        res.status(201).send(newAsset);
-      });
-      nmapScan.on('error', (e) => {
-        throw new Error(e);
-      });
+      const newAssetDiscover = await net_discovery(ip);
+      const newAsset = new Asset({ ...newAssetDiscover });
+      await newAsset.save();
+      res.status(201).send(newAsset);
     }
   } catch (e) {
     res.status(500).send({ msg: 'Internal Server Error!' });

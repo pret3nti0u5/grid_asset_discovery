@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { authReducer } from './authReducer';
 import { errorReducer } from './errorReducer';
-import { postsReducer } from './challengesReducer';
+import { assetsReducer } from './assetsReducer';
 
 export default combineReducers({
-  posts: postsReducer,
+  assets: assetsReducer,
   errors: errorReducer,
   auth: authReducer,
 });
