@@ -5,28 +5,49 @@ const authCheck = require('../../middleware/authCheck');
 const net_discovery = require('../../middleware/nmap_discovery');
 const host_discovery = require('../../middleware/hostDiscovery');
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const assetArr = {};
+    const filter = req.body.filter;
+    const assetsArr = {};
     const assets = await Asset.find().sort({ updatedAt: 'asc' });
-    const osKeys = await Asset.find().sort({ os: 'asc' }).distinct('os');
-    const domainKeys = await Asset.find()
-      .sort({ domain_address: 'asc' })
-      .distinct('domain_address');
-    const workgroupKeys = await Asset.find()
-      .sort({ workgroup: 'asc' })
-      .distinct('workgroup');
-    osKeys.map((key) => {
-      let arr = assets.filter((asset) => asset.category === key);
-      assetsArr[key] = arr;
-    });
-    res.send(assetsArr);
+    if (filter === 'all' || filter === undefined) {
+      res.send(assets);
+    }
+    if (filter === 'os') {
+      const osKeys = await Asset.find().sort({ os: 'asc' }).distinct('os');
+      osKeys.map((key) => {
+        let arr = assets.filter((asset) => asset.os === key);
+        assetsArr[key] = arr;
+      });
+      res.send(assetsArr);
+    }
+    if (filter === 'domain') {
+      const domainKeys = await Asset.find()
+        .sort({ domain_address: 'asc' })
+        .distinct('domain_address');
+      domainKeys.map((key) => {
+        let arr = assets.filter((asset) => asset.domain_address === key);
+        assetsArr[key] = arr;
+      });
+      res.send(assetsArr);
+    }
+    if (filter === 'workgroup') {
+      const workgroupKeys = await Asset.find()
+        .sort({ workgroup: 'asc' })
+        .distinct('workgroup');
+      workgroupKeys.map((key) => {
+        let arr = assets.filter((asset) => asset.workgroup === key);
+        assetsArr[key] = arr;
+      });
+      res.send(assetsArr);
+    }
   } catch (e) {
     res.status(500).send({ msg: 'Internal Server Error!' });
+    console.log(e);
   }
 });
 
-router.get('/ip', async (req, res) => {
+router.post('/ip', async (req, res) => {
   const ip = req.body.ip;
   try {
     const asset = await Asset.findOne({ ip });
@@ -43,7 +64,7 @@ router.get('/ip', async (req, res) => {
   }
 });
 
-router.get('/subnet', async (req, res) => {
+router.post('/subnet', async (req, res) => {
   const subnet = req.body.subnet;
   try {
     const ip_list = await host_discovery(subnet);
