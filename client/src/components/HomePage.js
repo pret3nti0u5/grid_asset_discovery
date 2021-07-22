@@ -2,7 +2,11 @@ import React from 'react';
 
 class HomePage extends React.Component {
   render() {
-    return <div className='nice'>Nice</div>;
+    return (
+      <div className='assets'>
+        <div className='section'></div>
+      </div>
+    );
   }
 }
 

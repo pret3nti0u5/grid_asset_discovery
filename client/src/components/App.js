@@ -5,7 +5,7 @@ import HomePage from './HomePage';
 // import LoginPage from './LoginPage';
 // import Challenges from './Challenges';
 // import Leaderboards from './Leaderboards';
-// import Navbar from './Navbar';
+import Navbar from './Navbar';
 // import { getUser } from '../actions/authActions';
 // import { clearErrors } from '../actions/errorActions';
 // import Welcome from './Welcome';
@@ -46,7 +46,12 @@ class App extends React.Component {
     //     </div>
     //   </Router>
     // );
-    return <HomePage />;
+    return (
+      <div className='app'>
+        <Navbar />
+        <HomePage />
+      </div>
+    );
   }
 }
 

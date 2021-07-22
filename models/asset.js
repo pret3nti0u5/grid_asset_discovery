@@ -14,6 +14,10 @@ const assetSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
+    domain_address: {
+      type: String,
+      trim: true,
+    },
     os: {
       type: String,
       trim: true,
