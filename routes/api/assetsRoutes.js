@@ -52,10 +52,17 @@ router.post('/ip', async (req, res) => {
   try {
     const asset = await Asset.findOne({ ip });
     if (asset) {
+      const date = new Date();
+      asset.lastSeen = date.toString();
+      await asset.save();
       res.send(asset);
     } else {
       const newAssetDiscover = await net_discovery(ip);
-      const newAsset = new Asset({ ...newAssetDiscover });
+      const date = new Date();
+      const newAsset = new Asset({
+        ...newAssetDiscover,
+        lastSeen: date.toString(),
+      });
       await newAsset.save();
       res.status(201).send(newAsset);
     }
@@ -72,10 +79,17 @@ router.post('/subnet', async (req, res) => {
       ip_list.map(async (ip) => {
         const asset = await Asset.findOne({ ip });
         if (asset) {
+          const date = new Date();
+          asset.lastSeen = date.toString();
+          await asset.save();
           return asset;
         }
         const newAssetDiscover = await net_discovery(ip);
-        const newAsset = new Asset({ ...newAssetDiscover });
+        const date = new Date();
+        const newAsset = new Asset({
+          ...newAssetDiscover,
+          lastSeen: date.toString(),
+        });
         await newAsset.save();
         return newAsset;
       })

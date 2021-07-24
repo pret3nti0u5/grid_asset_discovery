@@ -26,6 +26,10 @@ const assetSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
+    lastSeen: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: true,

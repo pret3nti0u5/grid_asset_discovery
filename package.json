@@ -7,6 +7,7 @@
     "client-install": "npm install --prefix client",
     "start": "env-cmd -f ./config/dev.env node server.js",
     "server": "env-cmd -f ./config/dev.env nodemon server.js",
+    "test": "env-cmd -f ./config/dev.env node testMongo.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"

@@ -3,9 +3,10 @@ import React from 'react';
 import Dropdown from './Dropdown';
 import Spinner from './Spinner';
 import { connect } from 'react-redux';
-import { getAssets } from '../actions/assetsActions';
+import { getAssets, clearAssets } from '../actions/assetsActions';
 class HomePage extends React.Component {
   componentDidMount() {
+    this.props.clearAssets();
     this.props.getAssets();
   }
 
@@ -21,7 +22,10 @@ class HomePage extends React.Component {
           </h1>
           <div className='columns is-centered is-multiline'>
             {challenges.map(
-              ({ hostname, ip, mac, domain_address, workgroup }, index) => {
+              (
+                { hostname, ip, mac, domain_address, workgroup, lastSeen },
+                index
+              ) => {
                 return (
                   <div className='column is-one-quarter is-narrow' key={index}>
                     <div className='card'>
@@ -58,6 +62,12 @@ class HomePage extends React.Component {
                             WORKGROUP:{' '}
                           </span>{' '}
                           <span className='is-size-6'>{workgroup}</span>
+                        </p>
+                        <p>
+                          <span className='is-size-6 has-text-weight-semibold'>
+                            LAST SEEN:{' '}
+                          </span>{' '}
+                          <span className='is-size-6'>{lastSeen}</span>
                         </p>
                       </div>
                     </div>
@@ -78,19 +88,28 @@ class HomePage extends React.Component {
     }
     if (this.props.filter !== 'All') {
       return (
-        <div>
+        <div className='container'>
+          <h1 className='is-size-1 has-text-centered is-uppercase has-text-weight-bold mt-2 poppins-font'>
+            Saved Assets
+          </h1>
           <Dropdown items={['All', 'OS', 'Domain', 'Workgroup']} />
           <div className='container'>{this.renderItems()}</div>
         </div>
       );
     }
     return (
-      <div>
+      <div className='container'>
+        <h1 className='is-size-1 has-text-centered is-uppercase has-text-weight-bold mt-2 poppins-font'>
+          Saved Assets
+        </h1>
         <Dropdown items={['All', 'OS', 'Domain', 'Workgroup']} />
         <div className='container'>
           <div className='columns is-centered is-multiline'>
             {this.props.assets.map(
-              ({ hostname, ip, mac, domain_address, workgroup }, index) => {
+              (
+                { hostname, ip, mac, domain_address, workgroup, lastSeen },
+                index
+              ) => {
                 return (
                   <div className='column is-one-quarter is-narrow' key={index}>
                     <div className='card'>
@@ -127,6 +146,12 @@ class HomePage extends React.Component {
                             WORKGROUP:{' '}
                           </span>{' '}
                           <span className='is-size-6'>{workgroup}</span>
+                        </p>
+                        <p>
+                          <span className='is-size-6 has-text-weight-semibold'>
+                            LAST SEEN:{' '}
+                          </span>{' '}
+                          <span className='is-size-6'>{lastSeen}</span>
                         </p>
                       </div>
                     </div>
@@ -149,4 +174,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { getAssets })(HomePage);
+export default connect(mapStateToProps, { getAssets, clearAssets })(HomePage);

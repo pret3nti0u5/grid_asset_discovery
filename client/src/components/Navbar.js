@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import './Navbar.css';
 // import logo from '../assets/simple-ctfd-clone-logo-navbar.png';
 // const base_URI =
@@ -16,9 +15,9 @@ class Navbar extends React.Component {
     return (
       <nav className='navbar is-info'>
         <div className='navbar-brand'>
-          <a className='navbar-item'>
+          <Link to='/' className='navbar-item'>
             <img alt='logo' width='180' />
-          </a>
+          </Link>
           <button
             onClick={() => this.setState({ clicked: !this.state.clicked })}
             className={`navbar-burger darkBg noBorder ${
@@ -34,7 +33,9 @@ class Navbar extends React.Component {
         </div>
         <div className={`navbar-menu ${this.state.clicked ? 'is-active' : ''}`}>
           <div className='navbar-start'>
-            <a className='navbar-item'>Search</a>
+            <Link to='/search' className='navbar-item'>
+              Search
+            </Link>
           </div>
           <div className='navbar-end'>
             {/* <div className='navbar-item'>
