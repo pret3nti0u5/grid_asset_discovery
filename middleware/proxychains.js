@@ -11,8 +11,9 @@ const ldap_fn = async (pc_name) => {
     //  console.info({ ldapSearch }['default'])
 };
 
-const proxychains = async () => {
-    ip = '192.168.1.224';
+const proxychains = async (ip, dns_address) => {
+    // ip = '192.168.1.224';
+    //dns_address = '192.168.1.1'
     const ports = await port_scanner(ip);
     return new Promise((resolve, reject) => {
 
@@ -22,14 +23,16 @@ const proxychains = async () => {
         let hostname = ''
         let os = ''
         let workgroup = ''
-        exec(`echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -sT -Pn -sC -sV -p${ports}  --dns-server 192.168.1.1 ${ip}`, function (err, stdout1) {
+        //exec(`echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -sT -Pn -sC -sV -p${ports}  --dns-server ${dns_address} ${ip}`, function (err, stdout1) {
+        exec(`echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -O --script smb-os-discovery.nse -F  --dns-server ${dns_address} ${ip}`, function (err, stdout1) {
+
             //console.log(stdout1)
 
-            //  if (stderr) throw (stderr);
-            //console.log(stdout1);
+            // if (stderr) throw (stderr);
+            // console.log(stdout1);
             // ip = stdout1.match(/\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b/i)
             // ip = ip[0]
-            // console.log(`The IPv4 address is: ${ip[0]}`);
+            console.log(`The IPv4 address is: ${ip}`);
             mac = stdout1.match(/(([\da-fA-F]{2}[-:]){5}[\da-fA-F]{2})/i);
             if (mac) {
                 //console.log(`the MAC address is ${mac[0]}`);
@@ -42,11 +45,13 @@ const proxychains = async () => {
             // }
             // service_info = stdout1.match(/Service Info: [a-zA-Z]+: .+/i)
             // console.log(service_info);
-            os = stdout1.match(/OS: [a-zA-Z]+;/i);
+            os = stdout1.match(/OS details: .+/i);
+            console.log("matched part=" + os)
             if (os) {
-                os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0];
+                // os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0];
+                os = os[0].split(":")[1]
             }
-            // console.log(os);
+            console.log("os is " + os);
             workgroup = stdout1.match(/Workgroup: [a-zA-Z]+/i);
             if (workgroup) {
                 workgroup = workgroup[0].split(':')[1];
@@ -54,10 +59,10 @@ const proxychains = async () => {
             }
             hostname = stdout1.match(/Nmap scan report for .+/i);
             if (hostname) {
-                // console.log(hostname)
+                console.log(hostname)
                 hostname = hostname[0].split(' ')[4];
             }
-            console.log(hostname)
+            //console.log(hostname)
             let JSON_object = {
                 hostname,
                 mac,
@@ -69,7 +74,10 @@ const proxychains = async () => {
                 domain_address = value;
                 console.log(`inside function ${domain_address}`);
                 JSON_object.domain_address = domain_address;
-                // console.log(hostname);
+                if (JSON_object.os === null) {
+                    JSON_object.os = "Microsoft Windows"
+                }
+                console.log(hostname);
 
                 console.log(JSON_object);
                 resolve(JSON_object);
@@ -81,12 +89,14 @@ const proxychains = async () => {
 
 }
 
-const testFunc = async () => {
-    const nice = await proxychains('192.168.1.1');
-    console.log(nice)
-    //     const nice1 = await net_discovery('192.168.1.224');
-    //     console.log(nice1);
-};
+// const testFunc = async () => {
+//     const nice = await proxychains('192.168.1.178', '192.168.1.1');
+//     console.log(nice)
+//     //     const nice1 = await net_discovery('192.168.1.224');
+//     //     console.log(nice1);
+// };
 
-testFunc();
+// testFunc();
+
+module.exports = proxychains;
 
