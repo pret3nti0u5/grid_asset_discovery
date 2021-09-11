@@ -22,7 +22,6 @@
     "ejs": "^3.1.6",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
-    "libnmap": "^0.4.19",
     "mongoose": "^5.12.11",
     "node-nmap": "^4.0.0",
     "passport": "^0.4.1",

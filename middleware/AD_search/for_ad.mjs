@@ -41,7 +41,7 @@ export default function ldapSeacrh(net_bios_name) {
             });
             resolve(domain)
             ldap.destroy();
-        })
+        }).catch((err) => console.log(err))
 
     })
 

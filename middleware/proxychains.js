@@ -1,4 +1,5 @@
 const { exec } = require('child_process');
+const { query } = require('express');
 const { resolve } = require('path');
 const { stdout, stderr } = require('process');
 const { stringify } = require('querystring');
@@ -14,17 +15,28 @@ const ldap_fn = async (pc_name) => {
 const proxychains = async (ip, dns_address) => {
     // ip = '192.168.1.224';
     //dns_address = '192.168.1.1'
-    const ports = await port_scanner(ip);
-    return new Promise((resolve, reject) => {
 
-        console.log(ports)
+    //const ports = await port_scanner(ip);
+
+    return new Promise((resolve, reject) => {
+        let query1 = ""
+        if (dns_address === undefined || dns_address === "" || dns_address === null) {
+            console.log("the dns address is:" + dns_address)
+            query1 = `echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -O --script smb-os-discovery.nse -F ${ip}`
+        }
+        else {
+            query1 = `echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -O --script smb-os-discovery.nse -F  --dns-server ${dns_address} ${ip}`
+        }
+        console.log(`------ Scanning target ${ip} ------------------`)
+        console.log("ports are:")
+        //console.log(ports)
         let domain_address = '';
         let mac = ''
         let hostname = ''
         let os = ''
         let workgroup = ''
         //exec(`echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -sT -Pn -sC -sV -p${ports}  --dns-server ${dns_address} ${ip}`, function (err, stdout1) {
-        exec(`echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -O --script smb-os-discovery.nse -F  --dns-server ${dns_address} ${ip}`, function (err, stdout1) {
+        exec(query1, function (err, stdout1) {
 
             //console.log(stdout1)
 

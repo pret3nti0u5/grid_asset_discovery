@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Asset = require('../../models/asset');
-const authCheck = require('../../middleware/authCheck');
+//const authCheck = require('../../middleware/authCheck');
 const net_discovery = require('../../middleware/proxychains');
 const host_discovery = require('../../middleware/host_proxychain');
 
@@ -58,7 +58,7 @@ router.post('/ip', async (req, res) => {
       await asset.save();
       res.send(asset);
     } else {
-      const newAssetDiscover = await net_discovery(ip,dns_address); //the second parameter is the DNS to be used for hostname lookup
+      const newAssetDiscover = await net_discovery(ip, dns_address); //the second parameter is the DNS to be used for hostname lookup
       const date = new Date();
       const newAsset = new Asset({
         ...newAssetDiscover,
@@ -86,7 +86,7 @@ router.post('/subnet', async (req, res) => {
           await asset.save();
           return asset;
         }
-        const newAssetDiscover = await net_discovery(ip,dns_address);
+        const newAssetDiscover = await net_discovery(ip, dns_address);
         const date = new Date();
         const newAsset = new Asset({
           ...newAssetDiscover,

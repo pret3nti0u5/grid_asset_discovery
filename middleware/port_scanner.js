@@ -7,7 +7,8 @@ const { stringify } = require('querystring');
 const port_scanner = async (ip) => {
 
     return new Promise((resolve, reject) => {
-        exec(`sudo proxychains nmap -Pn -sT ${ip}`, (err, stdout1) => {
+        console.log(`------ Scanning port for ${ip} ------------------`)
+        exec(`sudo proxychains4 nmap -Pn -sT ${ip}`, (err, stdout1) => {
 
             //console.log(stdout1);
 
@@ -25,8 +26,10 @@ const port_scanner = async (ip) => {
                 ports += arr3[i][0].split('/tcp')[0] + ","
             }
             ports = ports.substring(0, ports.length - 1);
+
+            console.log(`------ Finished Scanning port for ${ip} ------------------`)
             resolve(ports);
-            // console.log(ports);
+            console.log(ports);
         })
     })
 
