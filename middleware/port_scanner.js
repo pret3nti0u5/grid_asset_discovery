@@ -3,40 +3,31 @@ const { resolve } = require('path');
 const { stdout, stderr } = require('process');
 const { stringify } = require('querystring');
 
-
 const port_scanner = async (ip) => {
+	return new Promise((resolve, reject) => {
+		console.log(`------ Scanning port for ${ip} ------------------`);
+		exec(`echo '';sudo proxychains nmap -Pn -sT -F ${ip}`, (err, stdout1) => {
+			//console.log(stdout1);
 
-    return new Promise((resolve, reject) => {
-        console.log(`------ Scanning port for ${ip} ------------------`)
-        exec(`echo '';sudo proxychains nmap -Pn -sT -F ${ip}`, (err, stdout1) => {
+			// stdout1.matchAll(/.\/tcp/i)
 
-            //console.log(stdout1);
+			let arr3 = [...stdout1.matchAll(/\d+\/tcp/g)];
 
-            // stdout1.matchAll(/.\/tcp/i)
+			//console.log(arr3)
+			let ports = '';
 
-            let arr3 = [...stdout1.matchAll(/\d+\/tcp/g)]
+			for (i = 0; i < arr3.length; i++) {
+				//ports.push(arr3[i][0].split('/tcp')[0])
+				ports += arr3[i][0].split('/tcp')[0] + ',';
+			}
+			ports = ports.substring(0, ports.length - 1);
 
-            //console.log(arr3)
-            let ports = ""
-
-
-            for (i = 0; i < arr3.length; i++) {
-
-                //ports.push(arr3[i][0].split('/tcp')[0])
-                ports += arr3[i][0].split('/tcp')[0] + ","
-            }
-            ports = ports.substring(0, ports.length - 1);
-
-            console.log(`------ Finished Scanning port for ${ip} ------------------`)
-            resolve(ports);
-            console.log(ports);
-        })
-    })
-
-
-
-
-}
+			console.log(`------ Finished Scanning port for ${ip} ------------------`);
+			resolve(ports);
+			console.log(ports);
+		});
+	});
+};
 
 // const testFunc = async () => {
 //     const nice = await port_scanner('192.168.1.1');
@@ -48,5 +39,3 @@ const port_scanner = async (ip) => {
 // testFunc();
 
 module.exports = port_scanner;
-
-
