@@ -16,17 +16,20 @@ const proxychains = async (ip, dns_address) => {
     // ip = '192.168.1.224';
     //dns_address = '192.168.1.1'
 
-    //const ports = await port_scanner(ip);
+    const ports = await port_scanner(ip);
+    //const ports = "1"
 
     return new Promise((resolve, reject) => {
         let query1 = ""
         if (dns_address === undefined || dns_address === "" || dns_address === null) {
             console.log("the dns address is:" + dns_address)
-            query1 = `echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -O --script smb-os-discovery.nse -F ${ip}`
+            query1 = `echo '';sudo proxychains nmap -p${ports} --script smb-os-discovery -sV -Pn -sT ${ip};ssh nitin@4.tcp.ngrok.io -p 11579 -i ~/.ssh/id_ed25519  arp -a ${ip}`
         }
         else {
-            query1 = `echo '';sudo proxychains4 arp -a ${ip} ;sudo proxychains4 nmap -O --script smb-os-discovery.nse -F  --dns-server ${dns_address} ${ip}`
+            query1 = `echo '';ssh nitin@4.tcp.ngrok.io -p 11579 arp -a ${ip};sudo proxychains nmap -Pn -sT -O -sV --script smb-os-discovery.nse -p$PORTS  --dns-server ${dns_address} ${ip}`
         }
+
+        // query1 = `ssh nitin@0.tcp.ngrok.io -p 11726 -i ~/.ssh/id_ed25519  arp -a ${ip}`
         console.log(`------ Scanning target ${ip} ------------------`)
         console.log("ports are:")
         //console.log(ports)
@@ -41,7 +44,7 @@ const proxychains = async (ip, dns_address) => {
             //console.log(stdout1)
 
             // if (stderr) throw (stderr);
-            // console.log(stdout1);
+            console.log(stdout1);
             // ip = stdout1.match(/\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b/i)
             // ip = ip[0]
             console.log(`The IPv4 address is: ${ip}`);
@@ -50,7 +53,7 @@ const proxychains = async (ip, dns_address) => {
                 //console.log(`the MAC address is ${mac[0]}`);
                 mac = mac[0];
             }
-
+            //console.log(stdout1.match(/name = .+/i)[0].split('=')[1])
             // domain_address = stdout1.match(/Domain: [a-zA-Z]+\.[a-zA-Z0-9]+\./i);
             // if (domain_address) {
             //     console.log(`${domain_address}`);
@@ -58,11 +61,22 @@ const proxychains = async (ip, dns_address) => {
             // service_info = stdout1.match(/Service Info: [a-zA-Z]+: .+/i)
             // console.log(service_info);
             os = stdout1.match(/OS details: .+/i);
-            console.log("matched part=" + os)
             if (os) {
-                // os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0];
-                os = os[0].split(":")[1]
+                os = os[0].split(':')[1]
+                console.log(os)
             }
+            if (os === null) {
+                os = stdout1.match(/OS: .+/i);
+                if (os) {
+                    os = os[0].match(/[a-zA-Z]+;/i)[0].split(';')[0]
+                    console.log(os)
+                }
+            }
+            console.log("matched part=" + os)
+            // if (os) {
+            //     // os = os[0].match(/[a-zA-Z]+;$/i)[0].split(';')[0];
+            //     os = os[0].split(":")[1]
+            // }
             console.log("os is " + os);
             workgroup = stdout1.match(/Workgroup: [a-zA-Z]+/i);
             if (workgroup) {
@@ -70,31 +84,37 @@ const proxychains = async (ip, dns_address) => {
                 console.log(workgroup);
             }
             hostname = stdout1.match(/Nmap scan report for .+/i);
+
+
             if (hostname) {
                 console.log(hostname)
                 hostname = hostname[0].split(' ')[4];
             }
+            else {
+                hostname = stdout1.match(/name = .+/i)
+                // hostname=hostname[0].split('=')[1]
+            }
             //console.log(hostname)
             let JSON_object = {
                 hostname,
+                ip,
                 mac,
                 domain_address,
                 os,
                 workgroup,
             };
-            ldap_fn(hostname).then((value) => {
-                domain_address = value;
-                console.log(`inside function ${domain_address}`);
-                JSON_object.domain_address = domain_address;
-                if (JSON_object.os === null) {
-                    JSON_object.os = "Microsoft Windows"
-                }
-                console.log(hostname);
+            // ldap_fn(hostname).then((value) => {
+            //     domain_address = value;
+            //     console.log(`inside function ${domain_address}`);
+            //     JSON_object.domain_address = domain_address;
+            //     console.log(hostname);
 
-                console.log(JSON_object);
-                resolve(JSON_object);
-            });
-            // console.log(JSON_object);
+            //     console.log(JSON_object);
+            //     resolve(JSON_object);
+            // });
+            console.log(JSON_object);
+            resolve(JSON_object);
+
         })
     })
 
@@ -102,7 +122,7 @@ const proxychains = async (ip, dns_address) => {
 }
 
 // const testFunc = async () => {
-//     const nice = await proxychains('192.168.1.178', '192.168.1.1');
+//     const nice = await proxychains('192.168.1.33');
 //     console.log(nice)
 //     //     const nice1 = await net_discovery('192.168.1.224');
 //     //     console.log(nice1);

@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.12.11",
     "node-nmap": "^4.0.0",
+    "node-ssh": "^12.0.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "simple-ldap-search": "^3.0.2"

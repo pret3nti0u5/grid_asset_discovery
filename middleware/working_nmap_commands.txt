@@ -1,0 +1,5 @@
+sudo proxychains nmap -PN -sT -n -sV -p1-100 192.168.1.33
+sudo proxychains nmap -PN -sT -n -sV -p1-100 -O  192.168.1.33 
+Starting Nmap 7.92 ( https://nmap.org ) at 2021-09-11 21:06 +04
+sudo proxychains nmap -sV -O -Pn -sT -p445,139,80 192.168.1.1
+sudo proxychains nmap -sV -O -Pn -sT -F 192.168.1.1

@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Asset = require('../../models/asset');
 //const authCheck = require('../../middleware/authCheck');
-const net_discovery = require('../../middleware/proxychains');
-const host_discovery = require('../../middleware/host_proxychain');
+const net_discovery = require('../../middleware/no_proxychains/nmap_discovery');
+const host_discovery = require('../../middleware/no_proxychains/hostDiscovery');
 
 router.post('/', async (req, res) => {
   try {
@@ -98,6 +98,7 @@ router.post('/subnet', async (req, res) => {
     );
     res.send(assetList);
   } catch (e) {
+    console.log(e)
     res.status(500).send({ msg: 'Internal Server Error!' });
   }
 });

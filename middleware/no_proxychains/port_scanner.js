@@ -8,7 +8,7 @@ const port_scanner = async (ip) => {
 
     return new Promise((resolve, reject) => {
         console.log(`------ Scanning port for ${ip} ------------------`)
-        exec(`echo '';sudo proxychains nmap -Pn -sT -F ${ip}`, (err, stdout1) => {
+        exec(`sudo nmap -Pn -F ${ip}`, (err, stdout1) => {
 
             //console.log(stdout1);
 
