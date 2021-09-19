@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
@@ -33,6 +32,9 @@ class Navbar extends React.Component {
         </div>
         <div className={`navbar-menu ${this.state.clicked ? 'is-active' : ''}`}>
           <div className='navbar-start'>
+            <Link to='/scan' className='navbar-item'>
+              Scan
+            </Link>
             <Link to='/search' className='navbar-item'>
               Search
             </Link>

@@ -6,8 +6,11 @@ import { connect } from 'react-redux';
 import { getAssets, clearAssets } from '../actions/assetsActions';
 class HomePage extends React.Component {
   componentDidMount() {
-    this.props.clearAssets();
     this.props.getAssets();
+  }
+
+  componentWillUnmount() {
+    this.props.clearAssets();
   }
 
   renderItems() {
@@ -23,7 +26,7 @@ class HomePage extends React.Component {
           <div className='columns is-centered is-multiline'>
             {challenges.map(
               (
-                { hostname, ip, mac, domain_address, workgroup, lastSeen },
+                { hostname, ip, mac, domain_address, os, workgroup, lastSeen },
                 index
               ) => {
                 return (
@@ -56,6 +59,12 @@ class HomePage extends React.Component {
                             DOMAIN:{' '}
                           </span>{' '}
                           <span className='is-size-6'>{domain_address}</span>
+                        </p>
+                        <p>
+                          <span className='is-size-6 has-text-weight-semibold'>
+                            OS:{' '}
+                          </span>{' '}
+                          <span className='is-size-6'>{os}</span>
                         </p>
                         <p>
                           <span className='is-size-6 has-text-weight-semibold'>
@@ -107,7 +116,7 @@ class HomePage extends React.Component {
           <div className='columns is-centered is-multiline'>
             {this.props.assets.map(
               (
-                { hostname, ip, mac, domain_address, workgroup, lastSeen },
+                { hostname, ip, mac, domain_address, os, workgroup, lastSeen },
                 index
               ) => {
                 return (
@@ -140,6 +149,12 @@ class HomePage extends React.Component {
                             DOMAIN:{' '}
                           </span>{' '}
                           <span className='is-size-6'>{domain_address}</span>
+                        </p>
+                        <p>
+                          <span className='is-size-6 has-text-weight-semibold'>
+                            OS:{' '}
+                          </span>{' '}
+                          <span className='is-size-6'>{os}</span>
                         </p>
                         <p>
                           <span className='is-size-6 has-text-weight-semibold'>

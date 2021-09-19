@@ -23,13 +23,13 @@ export const getAssets =
   };
 
 export const getAssetsBySubnet =
-  (subnet = '192.168.1.0/24') =>
+  (subnet = '192.168.1.0/24', dns_address = '192.168.1.1') =>
   async (dispatch) => {
     dispatch(setAssetsLoading());
     try {
       const res = await axios.post(
         '/api/assets/subnet',
-        { subnet },
+        { subnet, dns_address },
         { withCredentials: true }
       );
       dispatch({
@@ -40,6 +40,62 @@ export const getAssetsBySubnet =
       dispatch(returnErrors(e.response.data, e.response.status));
     }
   };
+
+export const fuzzySearchAssets = (term) => async (dispatch) => {
+  dispatch(setAssetsLoading());
+  try {
+    const res = await axios.post(
+      '/assets/_search?pretty',
+      {
+        query: {
+          multi_match: {
+            fields: [
+              'hostname',
+              'ip',
+              'mac',
+              'domain_address',
+              'os',
+              'workgroup',
+              'lastSeen',
+            ],
+            query: term,
+            fuzziness: 'AUTO',
+          },
+        },
+      },
+      { withCredentials: true }
+    );
+    dispatch({
+      type: GET_ASSETS,
+      payload: res.data.hits.hits,
+    });
+  } catch (e) {
+    dispatch(returnErrors(e.response.data, e.response.status));
+  }
+};
+
+export const searchAssets = (term, searchType) => async (dispatch) => {
+  dispatch(setAssetsLoading());
+  try {
+    const res = await axios.post(
+      '/assets/_search?pretty',
+      {
+        query: {
+          match: {
+            [searchType]: term,
+          },
+        },
+      },
+      { withCredentials: true }
+    );
+    dispatch({
+      type: GET_ASSETS,
+      payload: res.data.hits.hits,
+    });
+  } catch (e) {
+    dispatch(returnErrors(e.response.data, e.response.status));
+  }
+};
 
 export const clearAssets = () => {
   return {

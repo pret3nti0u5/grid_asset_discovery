@@ -3,7 +3,7 @@ const { stdout, stderr } = require('process');
 const { stringify } = require('querystring');
 ///const { ldapSeacrh } = require('./AD_search/for_ad.mjs');
 // const ldap = require('./AD_search/for_ad.mjs')
-const port_scanner = require('./port_scanner')
+const port_scanner = require('./port_scanner');
 
 const ldap_fn = async (pc_name) => {
   const ldapSearch = await import('../AD_search/for_ad.mjs');
@@ -26,11 +26,10 @@ const net_discovery = async (ip_address, dns_address) => {
   // `echo '' ;sudo nmap -sn ${ip} ;nmap -f -T 4 -Pn --script smb-os-discovery.nse -O -sV -p${ports}  ${ip} `,
   return new Promise((resolve, reject) => {
     exec(
-
       `echo '' ;sudo nmap -sn ${ip} --dns-server ${dns_address};sudo nmap -F -T 4 -Pn --script smb-os-discovery.nse -O -sV --dns-server ${dns_address} ${ip}`,
       (error, stdout1, stderr) => {
         // if (error) throw error;
-        console.log(dns_address)
+        console.log(dns_address);
         if (stderr) console.log(stderr);
         //console.log(stdout1);
         // ip = stdout1.match(/\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b/i)
@@ -50,8 +49,8 @@ const net_discovery = async (ip_address, dns_address) => {
         // console.log(service_info);
         os = stdout1.match(/OS details: .+/i);
         if (os) {
-          os = os[0].split(':')[1]
-          console.log(os)
+          os = os[0].split(':')[1];
+          console.log(os);
         }
         if (os === null) {
           os = stdout1.match(/OS: [a-zA-Z]+;/i);

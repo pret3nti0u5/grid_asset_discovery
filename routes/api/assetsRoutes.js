@@ -43,13 +43,12 @@ router.post('/', async (req, res) => {
     }
   } catch (e) {
     res.status(500).send({ msg: 'Internal Server Error!' });
-    console.log(e);
   }
 });
 
 router.post('/ip', async (req, res) => {
   const ip = req.body.ip;
-  const dns_address = req.body.dns_address
+  const dns_address = req.body.dns_address;
   try {
     const asset = await Asset.findOne({ ip });
     if (asset) {
@@ -74,7 +73,7 @@ router.post('/ip', async (req, res) => {
 
 router.post('/subnet', async (req, res) => {
   const subnet = req.body.subnet;
-  const dns_address = req.body.dns_address
+  const dns_address = req.body.dns_address;
   try {
     const ip_list = await host_discovery(subnet);
     const assetList = await Promise.all(
@@ -98,7 +97,6 @@ router.post('/subnet', async (req, res) => {
     );
     res.send(assetList);
   } catch (e) {
-    console.log(e)
     res.status(500).send({ msg: 'Internal Server Error!' });
   }
 });
