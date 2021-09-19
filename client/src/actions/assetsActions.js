@@ -23,13 +23,13 @@ export const getAssets =
   };
 
 export const getAssetsBySubnet =
-  (subnet = '192.168.1.0/24', dns_address = '192.168.1.1') =>
+  (subnet = '192.168.1.0/24', dns_address = '192.168.1.1', scan_type) =>
   async (dispatch) => {
     dispatch(setAssetsLoading());
     try {
       const res = await axios.post(
         '/api/assets/subnet',
-        { subnet, dns_address },
+        { subnet, dns_address, scan_type },
         { withCredentials: true }
       );
       dispatch({

@@ -10,9 +10,13 @@ class ScanPage extends React.Component {
     this.props.clearAssets();
   }
 
-  getAssets(e) {
+  getAssets(e, scan_type) {
     e.preventDefault();
-    this.props.getAssetsBySubnet(this.state.subnet, this.state.dns_address);
+    this.props.getAssetsBySubnet(
+      this.state.subnet,
+      this.state.dns_address,
+      scan_type
+    );
   }
 
   renderItems() {
@@ -92,7 +96,7 @@ class ScanPage extends React.Component {
           Scan Subnet
         </h1>
         <div className='section'>
-          <form onSubmit={(e) => this.getAssets(e)}>
+          <form onSubmit={(e) => this.getAssets(e, 'local')}>
             <div className='field is-grouped'>
               <div className='control'>
                 <label className='label is-size-5'>Subnet</label>
@@ -118,7 +122,17 @@ class ScanPage extends React.Component {
               </div>
               <div className='control'>
                 <label className='label is-size-5'>&#8203;</label>
-                <button className='button is-primary'>Scan</button>
+                <button className='button is-primary' type='submit'>
+                  Scan Local
+                </button>
+              </div>
+              <div className='control'>
+                <label className='label is-size-5'>&#8203;</label>
+                <button
+                  className='button is-primary'
+                  onClick={(e) => this.getAssets(e, 'remote')}>
+                  Scan Remote
+                </button>
               </div>
             </div>
           </form>
