@@ -47,7 +47,7 @@ export default function ldapSeacrh(net_bios_name) {
 
 }
 
-console.log(ldapSeacrh('HYDRA-DC').then((rep) => console.log(rep)))
+//console.log(ldapSeacrh('HYDRA-DC').then((rep) => console.log(rep)))
 
 //module.exports = ldapSeacrh;
 

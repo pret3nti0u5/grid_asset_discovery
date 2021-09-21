@@ -24,6 +24,7 @@ const port_scanner = async (ip) => {
 
 			console.log(`------ Finished Scanning port for ${ip} ------------------`);
 			resolve(ports);
+			console.log('ports are:');
 			console.log(ports);
 		});
 	});

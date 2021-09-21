@@ -7,7 +7,7 @@ const { stringify } = require('querystring');
 const port_scanner = require('./port_scanner');
 
 const ldap_fn = async (pc_name) => {
-	const ldapSearch = await import('./AD_search/for_ad.mjs');
+	const ldapSearch = await import('./AD_search/ad_ldap_remote.mjs');
 	return ldapSearch['default'](pc_name);
 	//  console.info({ ldapSearch }['default'])
 };
@@ -15,26 +15,16 @@ const ldap_fn = async (pc_name) => {
 const proxychains = async (ip, dns_address) => {
 	// ip = '192.168.1.224';
 	//dns_address = '192.168.1.1'
-
+	console.log(`scanning ${ip}`);
 	const ports = await port_scanner(ip);
 	//const ports = "1"
 
 	return new Promise((resolve, reject) => {
 		let query1 = '';
-		if (
-			dns_address === undefined ||
-			dns_address === '' ||
-			dns_address === null
-		) {
-			console.log('the dns address is:' + dns_address);
-			query1 = `echo '';sudo proxychains nmap -p${ports} --script smb-os-discovery -sV -Pn -sT ${ip};ssh nitin@4.tcp.ngrok.io -p 11579 -i ~/.ssh/id_ed25519  arp -a ${ip}`;
-		} else {
-			query1 = `echo '';ssh nitin@4.tcp.ngrok.io -p 11579 arp -a ${ip};sudo proxychains nmap -Pn -sT -O -sV --script smb-os-discovery.nse -p$PORTS  --dns-server ${dns_address} ${ip}`;
-		}
+		query1 = `echo '';sudo proxychains nmap -p${ports} --script smb-os-discovery -sV -Pn -sT ${ip};ssh nitin@192.168.1.11 -p 6000 -i ~/.ssh/id_ed25519  arp -a ${ip}`;
 
 		// query1 = `ssh nitin@0.tcp.ngrok.io -p 11726 -i ~/.ssh/id_ed25519  arp -a ${ip}`
 		console.log(`------ Scanning target ${ip} ------------------`);
-		console.log('ports are:');
 		//console.log(ports)
 		let domain_address = '';
 		let mac = '';
@@ -88,7 +78,7 @@ const proxychains = async (ip, dns_address) => {
 			hostname = stdout1.match(/Nmap scan report for .+/i);
 
 			if (hostname) {
-				console.log(hostname);
+				console.log('hostname is:' + hostname);
 				hostname = hostname[0].split(' ')[4];
 			} else {
 				hostname = stdout1.match(/name = .+/i);
@@ -103,26 +93,26 @@ const proxychains = async (ip, dns_address) => {
 				os,
 				workgroup,
 			};
-			// ldap_fn(hostname).then((value) => {
-			//     domain_address = value;
-			//     console.log(`inside function ${domain_address}`);
-			//     JSON_object.domain_address = domain_address;
-			//     console.log(hostname);
+			ldap_fn(hostname).then((value) => {
+				domain_address = value;
+				console.log(`the domain address: ${domain_address}`);
+				JSON_object.domain_address = domain_address;
+				console.log(hostname);
 
-			//     console.log(JSON_object);
-			//     resolve(JSON_object);
-			// });
-			console.log(JSON_object);
-			resolve(JSON_object);
+				console.log(JSON_object);
+				resolve(JSON_object);
+			});
+			// console.log(JSON_object);
+			// resolve(JSON_object);
 		});
 	});
 };
 
 // const testFunc = async () => {
-//     const nice = await proxychains('192.168.1.33');
-//     console.log(nice)
-//     //     const nice1 = await net_discovery('192.168.1.224');
-//     //     console.log(nice1);
+// 	const nice = await proxychains('192.168.149.176');
+// 	console.log(nice);
+// 	//     const nice1 = await net_discovery('192.168.1.224');
+// 	//     console.log(nice1);
 // };
 
 // testFunc();

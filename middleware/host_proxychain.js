@@ -8,9 +8,10 @@ const nmap_discovery = require('./proxychains');
 const host_discovery = (ip_subnet) => {
 	console.log(`the ip subnet is ${ip_subnet}`);
 	return new Promise((resolve, reject) => {
-		exec(`echo ''; sudo nmap -sL ${ip_subnet}`, (error, stdout1, stderr) => {
+		exec(`echo '';nmap -sL ${ip_subnet}`, (error, stdout1, stderr) => {
 			//exec(`echo ''; sudo proxychains4 nmap -sn ${ip_subnet}`, (error, stdout1, stderr) => {
-
+			console.log('remote scanning subnet');
+			console.log(stdout1);
 			// if (error) throw error;
 			// if (stderr) throw stderr;d
 
@@ -35,15 +36,14 @@ const host_discovery = (ip_subnet) => {
 };
 
 // const testFunc = async () => {
-//     const ip_list = await host_discovery("192.168.1.0/24")
-//     console.log(ip_list)
-//     //const ip_list = ["192.168.1.33", "192.168.1.224", "192.168.1.1", "192.168.1.178"]
-//     ////const ip_list = ["192.168.1.152"]
-//     for (i in ip_list) {
-//         const nice = await nmap_discovery(ip_list[i]);
-//         console.log(nice)
-//     }
-
+// 	const ip_list = await host_discovery('192.168.149.180/27');
+// 	console.log(ip_list);
+// 	//const ip_list = ["192.168.1.33", "192.168.1.224", "192.168.1.1", "192.168.1.178"]
+// 	////const ip_list = ["192.168.1.152"]
+// 	// for (i in ip_list) {
+// 	//     const nice = await nmap_discovery(ip_list[i]);
+// 	//     console.log(nice)
+// 	// }
 // };
 
 // testFunc();
