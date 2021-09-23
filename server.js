@@ -1,30 +1,15 @@
 const express = require('express');
-// const passport = require('passport');
-// const cookieSession = require('cookie-session');
 const cors = require('cors');
 const path = require('path');
 require('./db/mongoose');
-// require('./middleware/passport-setup');
 const assetsRoutes = require('./routes/api/assetsRoutes.js');
-// const authRoutes = require('./routes/api/authRoutes.js');
-// const userRoutes = require('./routes/api/userRoutes.js');
 
 const app = express();
 const PORT = process.env.PORT;
 
 app.use(cors());
-// app.use(
-//   cookieSession({
-//     maxAge: 4 * 60 * 60 * 1000,
-//     keys: [process.env.cookieKey],
-//   })
-// );
 app.use(express.json());
-// app.use(passport.initialize());
-// app.use(passport.session());
 app.use('/api/assets', assetsRoutes);
-// app.use('/api/user', userRoutes);
-// app.use(authRoutes);
 
 if (process.env.NODE_ENV === undefined) {
   app.get('*', (req, res) => {
