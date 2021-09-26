@@ -49,3 +49,4 @@ The platform has been developed using the **MERN** Stack. The exact use of each 
   - [**mongoose**](https://mongoosejs.com/) - ODM library for MongoDB.
 - [**nmap**](https://nmap.org/) - Open Source program for network scanning.
 - [**arp-scan**](https://nmap.org/) - Open Source program for dealing with arp protocol.
+- [**sshuttle**](https://sshuttle.readthedocs.io/en/stable/usage.html) - Open source library for sending TCP traffic through ssh tunnels.
