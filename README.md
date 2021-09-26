@@ -8,7 +8,6 @@ This method requires `node version 12+` and `npm version 6.4+` installed on your
 
 ```zsh
 ssh -D <port> user@remote-host -f -q -N
-
 sshuttle -N -r user@ip_of_remote_host:port --dns
 # edit proxychains4.conf as
 # socks4 127.0.0.1 1080
@@ -18,7 +17,7 @@ npm run dev             #You will have to setup all the required env variable in
 ```
 
 This will start the react-dev-server on localhost on `port:3000` and the node-backend-server on `port:5000`.
-You will have to setup your env variables in ./config/dev.env, which includes the server port.
+You will have to setup your env variables in `./config/dev.env`, which includes the server port. You will also have to edit `proxychains4.conf` with `socks4 127.0.0.1 1080`.
 
 You can also run the react-dev-server and node-backend-server separately using the following commands
 
@@ -28,9 +27,74 @@ npm run start  #Start node-backend-server on port 5000 using node (no auto reloa
 npm run client #Start react-dev-server on port 3000
 ```
 
+#### Using Docker Container Modules
+
+This method only requires that you have the `Docker engine` and `docker-compose` installed on your machine.
+
+- Added benefits to this method other than the ones that docker already provides is you are not confined to developing in the docker container. You can also develop using your local modules as defined above.
+- Before spinning up your docker containers you will need to go to `./client/package.json` and change `proxy` from `http://localhost:5000` to `http://node_server:5000`.
+
+```zsh
+docker-compose up  #Starts the react-dev-server on localhost:3000 and node-server on localhost:5000
+```
+
+This will start the react-dev-server on localhost on `port:3000` and the node-backend-server on `port:5000`.
+You will have to setup your env variables in ./config/dev.env, which includes the server port.
+
+You can even run it detached in the background using the -d option.
+
+```zsh
+docker-compose up -d
+docker-compose logs  #To view server logs
+```
+
+npm packages for the frontend or backend can be installed using `docker-compose exec`
+
+```zsh
+docker-compose exec -w /usr/src/node_server node_server npm install --save <package name>  #Install npm package for node-backend-server
+docker-compose exec -w /usr/src/react_server react_server npm install --save <package name> #Install npm package for react-dev-server
+```
+
+Once done developing, you can clean up running containers and networks using:
+
+```zsh
+docker-compose down
+```
+
+### Production
+
+Once you have made all the changes that you require you can push to production by -
+<br/>
+
+- Changing the `callbackURL` in `./middleware/passport-setup.js` and the `base_URI` in `./client/src/components/LoginPage.js` and `./client/src/components/Navbar.js` to the url this platform is being hosted on.
+
+```zsh
+cd client
+npm run build
+```
+
+On build finish you can deploy it to the hosting provider of your choice.
+
+#### Deployment to Heroku
+
+If you plan to deploy it to heroku then I would suggest not deleting the Procfile or the heroku-postbuild script.
+
+You can deploy to Heroku using the following steps.
+
+- Ensure that you have the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed.
+- Run the following command
+
+```zsh
+heroku create [unique herkou repository name]
+heroku config:set [env-variable-key:env-variable-value] #for all the env variables set up in ./config/dev.env
+git add -A
+git commit -m "Deploying to heroku"
+git push heroku master
+```
+
 ## Motivation
 
-Grid
+This Asset Discovery Tool was made in Partial Fulfillment of the requirements of Flipkart GRID 3.0 Hackathon, Cybersecurity Pathway.
 
 ## Technologies Used
 
@@ -47,6 +111,7 @@ The platform has been developed using the **MERN** Stack. The exact use of each 
 
 - **MongoDB** - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) has been used for spinning up a free DB for this app.
   - [**mongoose**](https://mongoosejs.com/) - ODM library for MongoDB.
+  - [**mongoosastic**](https://github.com/mongoosastic/mongoosastic) - Mongoose Plugin for indexing MongoDB records in Elasticsearch.
 - [**nmap**](https://nmap.org/) - Open Source program for network scanning.
 - [**arp-scan**](https://nmap.org/) - Open Source program for dealing with arp protocol.
 - [**sshuttle**](https://sshuttle.readthedocs.io/en/stable/usage.html) - Open source library for sending TCP traffic through ssh tunnels.
