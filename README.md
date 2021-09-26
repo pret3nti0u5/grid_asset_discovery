@@ -7,8 +7,9 @@
 This method requires `node version 12+` and `npm version 6.4+` installed on your machine.
 
 ```zsh
-ssh -D <port> user@remote-host -f -q -N
-sshuttle -N -r user@ip_of_remote_host:port --dns
+ssh -D <port> <user>@<remote-host> -f -q -N
+sshuttle -N -r <user>@<remote_host_ip>:<port> --<dns>
+#You will have to edit out the variables in <> as per your requirements
 # edit proxychains4.conf as
 # socks4 127.0.0.1 1080
 npm i                   #Install server side dependencies
@@ -65,8 +66,6 @@ docker-compose down
 
 Once you have made all the changes that you require you can push to production by -
 <br/>
-
-- Changing the `callbackURL` in `./middleware/passport-setup.js` and the `base_URI` in `./client/src/components/LoginPage.js` and `./client/src/components/Navbar.js` to the url this platform is being hosted on.
 
 ```zsh
 cd client
