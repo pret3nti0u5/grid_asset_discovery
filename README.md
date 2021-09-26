@@ -8,7 +8,9 @@ This method requires `node version 12+` and `npm version 6.4+` installed on your
 
 ```zsh
 ssh -D <port> user@remote-host -f -q -N
-# edit proxychains4.conf as 
+
+sshuttle -N -r user@ip_of_remote_host:port --dns
+# edit proxychains4.conf as
 # socks4 127.0.0.1 1080
 npm i                   #Install server side dependencies
 npm run client-install  #Install client side dependencies
@@ -47,4 +49,3 @@ The platform has been developed using the **MERN** Stack. The exact use of each 
   - [**mongoose**](https://mongoosejs.com/) - ODM library for MongoDB.
 - [**nmap**](https://nmap.org/) - Open Source program for network scanning.
 - [**arp-scan**](https://nmap.org/) - Open Source program for dealing with arp protocol.
-
