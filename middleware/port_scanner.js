@@ -9,7 +9,6 @@ const port_scanner = async (ip) => {
 		exec(`echo '';sudo proxychains nmap -Pn -sT -F ${ip}`, (err, stdout1) => {
 			let arr3 = [...stdout1.matchAll(/\d+\/tcp/g)];
 
-			//console.log(arr3)
 			let ports = '';
 
 			for (i = 0; i < arr3.length; i++) {
